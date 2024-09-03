@@ -1,0 +1,905 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CalculationInput" nillable="true" type="CalculationInput" />
+  <xs:complexType name="CalculationInput">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Client" type="Terminal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="InsId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="BaseDate" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CalculationType" type="CalculationType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="GreekLevel" type="GreekLevel" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Pricer" type="Pricer" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Instrument" type="Instrument" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DataSet" type="DataSet" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Context" type="Context" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Simulation" type="Simulation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Terminal">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SocketChannelID" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="CalculationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Price" />
+      <xs:enumeration value="Price_Greek" />
+      <xs:enumeration value="Price_CF" />
+      <xs:enumeration value="Price_Greek_CF" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="GreekLevel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Office" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Level" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="GreekCalculationMethods" type="ArrayOfGreekCalculationMethod" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfGreekCalculationMethod">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GreekCalculationMethod" nillable="true" type="GreekCalculationMethod" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GreekCalculationMethod">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="SensitivityType" type="SensitivityType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Type" type="GreekCalculationMethodType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Pert1" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PerturbationType1" type="PerturbationType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Pert2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PerturbationType2" nillable="true" type="PerturbationType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TenorFlag" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="SensitivityType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PV01" />
+      <xs:enumeration value="TenorPV01" />
+      <xs:enumeration value="ModifiedDuration" />
+      <xs:enumeration value="MacaulyDuration" />
+      <xs:enumeration value="Convexity" />
+      <xs:enumeration value="Delta" />
+      <xs:enumeration value="Gamma" />
+      <xs:enumeration value="Vega" />
+      <xs:enumeration value="Theta" />
+      <xs:enumeration value="Rho" />
+      <xs:enumeration value="Vanna" />
+      <xs:enumeration value="Charm" />
+      <xs:enumeration value="CrossGamma" />
+      <xs:enumeration value="CrossVanna" />
+      <xs:enumeration value="Cega" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="GreekCalculationMethodType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Upside" />
+      <xs:enumeration value="Downside" />
+      <xs:enumeration value="BothSide" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PerturbationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Percent" />
+      <xs:enumeration value="Value" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Pricer">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Version" type="xs:double" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ModelParameters" type="ArrayOfModelParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfModelParameter">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ModelParameter" nillable="true" type="ModelParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ModelParameter">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Instrument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Type" type="InstrumentType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DetailType" nillable="true" type="InstrumentDetailType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="EffectiveDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TerminationDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="InitialPriceDeterminateDate" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PrincipalExchangeType" nillable="true" type="PrincipalExchangeType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="InitPrincipalExchangeDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TermPrincipalExchangeDate" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PrincipalRedemptionRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ProtectionType" nillable="true" type="ProtectionType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SettleDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="UnitAmount" type="Money" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CounterUnitAmount" type="Money" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ContractPrice" type="Money" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Underlyings" type="ArrayOfUnderlying" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExerciseEvents" type="ArrayOfExerciseEvent" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExoticEvents" type="ArrayOfExoticEvent" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CouponEvents" type="ArrayOfCouponEvent" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Legs" type="ArrayOfLeg" />
+      <xs:element minOccurs="0" maxOccurs="1" name="AddInfo" type="AdditionalInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="InstrumentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FRA" />
+      <xs:enumeration value="FRN" />
+      <xs:enumeration value="FXForward" />
+      <xs:enumeration value="FXSpot" />
+      <xs:enumeration value="VanillaOption" />
+      <xs:enumeration value="BarrierOption" />
+      <xs:enumeration value="TwoWayKnockOutBarrierOption" />
+      <xs:enumeration value="DigitalOption" />
+      <xs:enumeration value="StepDown" />
+      <xs:enumeration value="Booster" />
+      <xs:enumeration value="BEN" />
+      <xs:enumeration value="KnockOut" />
+      <xs:enumeration value="IRStructured" />
+      <xs:enumeration value="CD" />
+      <xs:enumeration value="CP" />
+      <xs:enumeration value="IRS" />
+      <xs:enumeration value="CRS" />
+      <xs:enumeration value="FXSwap" />
+      <xs:enumeration value="CLN" />
+      <xs:enumeration value="CDS" />
+      <xs:enumeration value="TRS" />
+      <xs:enumeration value="PRS" />
+      <xs:enumeration value="ZeroCouponBond" />
+      <xs:enumeration value="SimpleBond" />
+      <xs:enumeration value="CompoundBond" />
+      <xs:enumeration value="Compound5Simlple2Bond" />
+      <xs:enumeration value="CouponBond" />
+      <xs:enumeration value="TIPS" />
+      <xs:enumeration value="FixedCouponBond" />
+      <xs:enumeration value="SimpleFRN" />
+      <xs:enumeration value="ConvertibleBond" />
+      <xs:enumeration value="BondWithWarrantSeparable" />
+      <xs:enumeration value="BondWithWarrantNonSeparable" />
+      <xs:enumeration value="ExchangeableBond" />
+      <xs:enumeration value="EquityFutures" />
+      <xs:enumeration value="KTBFutures" />
+      <xs:enumeration value="FXFutures" />
+      <xs:enumeration value="BondForward" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="InstrumentDetailType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ConvertibleBond" />
+      <xs:enumeration value="BondWithWarrant" />
+      <xs:enumeration value="ExchangeableBond" />
+      <xs:enumeration value="Option" />
+      <xs:enumeration value="Warrant" />
+      <xs:enumeration value="Right" />
+      <xs:enumeration value="ELW" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PrincipalExchangeType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Initial" />
+      <xs:enumeration value="Termination" />
+      <xs:enumeration value="InitialAndTermination" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ProtectionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ProtectionSeller" />
+      <xs:enumeration value="ProtectionBuyer" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Money">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Currency" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfUnderlying">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Underlying" nillable="true" type="Underlying" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Underlying">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Type" type="UnderlyingType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Currency" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CounterCurrency" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="TenorYear" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CouponFreqYear" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Coupon" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DayCountConvention" nillable="true" type="DayCountConvention" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ExchangeRateType" type="ExchangeRateType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Instrument" type="Instrument" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="UnderlyingType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="StockIndex" />
+      <xs:enumeration value="Stock" />
+      <xs:enumeration value="InterestRate" />
+      <xs:enumeration value="Forex" />
+      <xs:enumeration value="Commodity" />
+      <xs:enumeration value="Credit" />
+      <xs:enumeration value="Bond" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DayCountConvention">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ACT365" />
+      <xs:enumeration value="ACT360" />
+      <xs:enumeration value="D30360" />
+      <xs:enumeration value="D30E360" />
+      <xs:enumeration value="ACTACT" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ExchangeRateType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Mar" />
+      <xs:enumeration value="Spot" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfExerciseEvent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExerciseEvent" nillable="true" type="ExerciseEvent" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExerciseEvent">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Type" type="ExerciseEventType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Performer" nillable="true" type="Performer" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ExerciseType" type="ExerciseType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ObservStopPerformer" nillable="true" type="Performer" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PrinGuaranteeRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DummyYield" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DummyYield2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LossPartRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PartRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Exercises" type="ArrayOfExercise" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="ExerciseEventType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Autocall" />
+      <xs:enumeration value="Vanilla" />
+      <xs:enumeration value="Digital" />
+      <xs:enumeration value="Booster" />
+      <xs:enumeration value="Callable" />
+      <xs:enumeration value="BEN" />
+      <xs:enumeration value="None" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Performer">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="WorstOf" />
+      <xs:enumeration value="BestOf" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ExerciseType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Greater" />
+      <xs:enumeration value="EqualOrGreater" />
+      <xs:enumeration value="EqualOrLess" />
+      <xs:enumeration value="Less" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfExercise">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Exercise" nillable="true" type="Exercise" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Exercise">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="ExerciseBeginDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExerciseDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExerciseDate2" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExerciseDate3" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SettleDate" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsObservStopDate" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" maxOccurs="1" name="EjectedUnderlying" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Strike" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Yield" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Strike2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Yield2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RangePartRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PayRate" nillable="true" type="xs:decimal" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfExoticEvent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExoticEvent" nillable="true" type="ExoticEvent" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExoticEvent">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Type" type="ExoticEventType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Performer" nillable="true" type="Performer" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ObservationType" type="ObservationType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ObservationPriceType" type="ObservationPriceType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExoticConditions" type="ArrayOfExoticCondition" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="ExoticEventType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="KnockInBarrier" />
+      <xs:enumeration value="KnockOutBarrier" />
+      <xs:enumeration value="MonthlyCouponBarrier" />
+      <xs:enumeration value="LizardBarrier" />
+      <xs:enumeration value="ChameleonBarrier" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ObservationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Greater" />
+      <xs:enumeration value="EqualOrGreater" />
+      <xs:enumeration value="EqualOrLess" />
+      <xs:enumeration value="Less" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ObservationPriceType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ClosePrice" />
+      <xs:enumeration value="IntraDayPrice" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfExoticCondition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExoticCondition" nillable="true" type="ExoticCondition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ExoticCondition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="ObservBeginDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ObservEndDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SettleDate" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ConditionValue" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Yield" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ConditionValue2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Yield2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsHit" type="xs:boolean" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfCouponEvent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CouponEvent" nillable="true" type="CouponEvent" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CouponEvent">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="Type" type="CouponEventType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PayoffNo" nillable="true" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="FixedIr" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="FixedIr2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ConditionType" type="ConditionType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ConditionTarget" type="ConditionTarget" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ConditionValue" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RefIrCode" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Multiplier" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Spread" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RefIr2Code" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Multiplier2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RefIr3Code" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Multiplier3" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="RefIr4Code" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Multiplier4" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LowerRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="UpperRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Lower2Rate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Upper2Rate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="FloorRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CapRate" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CompoundFreqMonths" nillable="true" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CouponFreqMonths" nillable="true" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="IsInstallmentRedemption" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="1" maxOccurs="1" name="UnredeemedTermMonths" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RedemptionFreqMonths" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="RedemptionCount" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CalendarId" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PaymentTime" nillable="true" type="PaymentTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="DayCountConvention" nillable="true" type="DayCountConvention" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Cashflows" type="ArrayOfCashflow" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="CouponEventType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Fixed" />
+      <xs:enumeration value="FixedSeries" />
+      <xs:enumeration value="Floating" />
+      <xs:enumeration value="RangeAccrual" />
+      <xs:enumeration value="DualRangeAccrual" />
+      <xs:enumeration value="Steepner" />
+      <xs:enumeration value="Discount" />
+      <xs:enumeration value="FixedWithCondition" />
+      <xs:enumeration value="FloatingWithCondition" />
+      <xs:enumeration value="FixedOrPowerSpreadWithCondition" />
+      <xs:enumeration value="FixedWithConditionHybrid" />
+      <xs:enumeration value="FloatingWithConditionHybrid" />
+      <xs:enumeration value="None" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ConditionType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Greater" />
+      <xs:enumeration value="EqualOrGreater" />
+      <xs:enumeration value="EqualOrLess" />
+      <xs:enumeration value="Less" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ConditionTarget">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Fixed" />
+      <xs:enumeration value="Floating" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PaymentTime">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="InAdvance" />
+      <xs:enumeration value="InArrear" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfCashflow">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Cashflow" nillable="true" type="Cashflow" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Cashflow">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="ResetDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="BeginDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="EndDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SettleDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="UnitAmount" type="Money" />
+      <xs:element minOccurs="1" maxOccurs="1" name="FixingIr" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PayoffNo" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ConditionResetDate" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfLeg">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Leg" nillable="true" type="Leg" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Leg">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="PayOrReceive" type="PayOrReceive" />
+      <xs:element minOccurs="0" maxOccurs="1" name="TerminationDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="UnitAmount" type="Money" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CounterUnitAmount" type="Money" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Underlyings" type="ArrayOfUnderlying" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExerciseEvents" type="ArrayOfExerciseEvent" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ExoticEvents" type="ArrayOfExoticEvent" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CouponEvents" type="ArrayOfCouponEvent" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="PayOrReceive">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Pay" />
+      <xs:enumeration value="Receive" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="AdditionalInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Properties" type="ArrayOfProperty" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfProperty">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Property" nillable="true" type="Property" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Property">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DataSet">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Prices" type="ArrayOfPrice" />
+      <xs:element minOccurs="0" maxOccurs="1" name="YieldCurves" type="ArrayOfYieldCurve" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DividendYields" type="ArrayOfDividendYield" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DividendStreams" type="ArrayOfDividendStream" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Vols" type="ArrayOfVolatility" />
+      <xs:element minOccurs="0" maxOccurs="1" name="VolCurves" type="ArrayOfVolCurve" />
+      <xs:element minOccurs="0" maxOccurs="1" name="VolSurfaces" type="ArrayOfVolSurface" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Corrs" type="ArrayOfCorr" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FixingPrices" type="ArrayOfPriceList" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Calendars" type="ArrayOfCalendar" />
+      <xs:element minOccurs="0" maxOccurs="1" name="HWModelParams" type="ArrayOfHWModelParameter" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ImplVolParams" type="ArrayOfImpliVolParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfPrice">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Price" nillable="true" type="Price" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Price">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractMarketData">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AbstractMarketData" abstract="true">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DataId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="BaseDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DataSetId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Corr">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractMarketData">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="CorrMatrixId" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefDataId1" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefDataId2" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VolSurface">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractMarketData">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Tenors" type="ArrayOfTenor" />
+          <xs:element minOccurs="0" maxOccurs="1" name="SwapTenors" type="ArrayOfTenor1" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Strikes" type="ArrayOfDecimal" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Values" type="ArrayOfDecimal1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfTenor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Tenor" nillable="true" type="Tenor" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Tenor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Year" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Date" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfTenor1">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SwapTenor" nillable="true" type="Tenor" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDecimal">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Strike" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDecimal1">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Value" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="VolCurve">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractMarketData">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Vols" type="ArrayOfVolatility1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfVolatility1">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Vol" nillable="true" type="Volatility" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Volatility">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractMarketData">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Tenor" type="Tenor" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DividendStream">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractMarketData">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Dividends" type="ArrayOfDividend" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDividend">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Dividend" nillable="true" type="Dividend" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Dividend">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Date" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Amount" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DividendYield">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractMarketData">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="YieldCurve">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractMarketData">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Type" type="YieldCurveType" />
+          <xs:element minOccurs="1" maxOccurs="1" name="YieldType" type="YieldType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Currency" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Yields" type="ArrayOfYield" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="YieldCurveType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Bond" />
+      <xs:enumeration value="IRS" />
+      <xs:enumeration value="CRS" />
+      <xs:enumeration value="CDSSpread" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="YieldType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="YTM" />
+      <xs:enumeration value="Zero" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfYield">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Yield" nillable="true" type="Yield" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Yield">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Tenor" type="Tenor" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfYieldCurve">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="YieldCurve" nillable="true" type="YieldCurve" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDividendYield">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DividendYield" nillable="true" type="DividendYield" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDividendStream">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DividendStream" nillable="true" type="DividendStream" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfVolatility">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Volatility" nillable="true" type="Volatility" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfVolCurve">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="VolCurve" nillable="true" type="VolCurve" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfVolSurface">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="VolSurface" nillable="true" type="VolSurface" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfCorr">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Corr" nillable="true" type="Corr" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfPriceList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FixingPrices" nillable="true" type="PriceList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PriceList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DataId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DataSetId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Dates" type="ArrayOfString" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Prices" type="ArrayOfDecimal2" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfString">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Date" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDecimal2">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Price" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfCalendar">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Calendar" nillable="true" type="Calendar" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Calendar">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Dates" type="ArrayOfString" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfHWModelParameter">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="HWModelParam" nillable="true" type="HWModelParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="HWModelParameter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractCalibrationData">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Type" type="HWModelType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefYieldCurveId" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefCapVolId" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefSwaptionVolId" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Kappa" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Kappa2" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Rho" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CapRt" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FloorRt" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Vols" type="ArrayOfHWVolatility" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Calculated" nillable="true" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AbstractCalibrationData" abstract="true">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DataId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="BaseDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DataSetId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ImpliVolParameter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractCalibrationData">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="MktOptionPrice" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Calculated" nillable="true" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="HWModelType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OneFactor" />
+      <xs:enumeration value="TwoFactor" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfHWVolatility">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Vol" nillable="true" type="HWVolatility" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="HWVolatility">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Tenor" type="Tenor" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value2" nillable="true" type="xs:decimal" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfImpliVolParameter">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ImplVolParam" nillable="true" type="ImpliVolParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Context">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Maps" type="ArrayOfContextMap" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfContextMap">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ContextMap" nillable="true" type="ContextMap" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ContextMap">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Key" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MarketDataMaps" type="ArrayOfMarketDataMap" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfMarketDataMap">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MarketDataMap" nillable="true" type="MarketDataMap" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MarketDataMap">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="MarketDataType" type="MarketDataType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DataId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="MarketDataType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Price" />
+      <xs:enumeration value="RiskFreeCurve" />
+      <xs:enumeration value="RiskFreeCurveZero" />
+      <xs:enumeration value="RiskFreeCurveYTM" />
+      <xs:enumeration value="CounterRiskFreeCurveZero" />
+      <xs:enumeration value="CounterRiskFreeCurveYTM" />
+      <xs:enumeration value="DiscountCurve" />
+      <xs:enumeration value="DiscountCurveZero" />
+      <xs:enumeration value="DiscountCurveYTM" />
+      <xs:enumeration value="CDSSpread" />
+      <xs:enumeration value="DividendYield" />
+      <xs:enumeration value="DividendStream" />
+      <xs:enumeration value="Volatility" />
+      <xs:enumeration value="VolCurve" />
+      <xs:enumeration value="VolSurface" />
+      <xs:enumeration value="CapVol" />
+      <xs:enumeration value="SwaptionVol" />
+      <xs:enumeration value="Correlation" />
+      <xs:enumeration value="CurveCorrelation" />
+      <xs:enumeration value="QuantoVol" />
+      <xs:enumeration value="QuantoCorr" />
+      <xs:enumeration value="HullAndWhiteVol1" />
+      <xs:enumeration value="HullAndWhiteVol2" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Simulation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Type" type="SimulationType" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Scenarios" type="ArrayOfScenario" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="SimulationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DataSet" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfScenario">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Scenario" nillable="true" type="Scenario" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Scenario">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DataSet" type="DataSet" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+</xs:schema>

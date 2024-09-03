@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CalculationOutput" nillable="true" type="CalculationOutput" />
+  <xs:complexType name="CalculationOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="InsId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Client" type="Terminal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Prices" type="ArrayOfPriceOutput" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Greeks" type="ArrayOfGreekOutput" />
+      <xs:element minOccurs="0" maxOccurs="1" name="CashFlows" type="ArrayOfCashFlowOutput" />
+      <xs:element minOccurs="0" maxOccurs="1" name="HWModelParams" type="ArrayOfHWModelParameter" />
+      <xs:element minOccurs="0" maxOccurs="1" name="WarnMessage" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Terminal">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Type" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SocketChannelID" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfPriceOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Price" nillable="true" type="PriceOutput" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PriceOutput">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ScenarioNo" type="xs:int" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PayValue" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="ReceiveValue" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="NearValue" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Currency" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="UnitEvalAmount" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfGreekOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Greek" nillable="true" type="GreekOutput" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GreekOutput">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ScenarioNo" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="FactorId" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SensitivityType" type="SensitivityType" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Delta" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Gamma" nillable="true" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="SensitivityType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PV01" />
+      <xs:enumeration value="TenorPV01" />
+      <xs:enumeration value="ModifiedDuration" />
+      <xs:enumeration value="MacaulyDuration" />
+      <xs:enumeration value="Convexity" />
+      <xs:enumeration value="Delta" />
+      <xs:enumeration value="Gamma" />
+      <xs:enumeration value="Vega" />
+      <xs:enumeration value="Theta" />
+      <xs:enumeration value="Rho" />
+      <xs:enumeration value="Vanna" />
+      <xs:enumeration value="Charm" />
+      <xs:enumeration value="CrossGamma" />
+      <xs:enumeration value="CrossVanna" />
+      <xs:enumeration value="Cega" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfCashFlowOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CashFlow" nillable="true" type="CashFlowOutput" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CashFlowOutput">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="ScenarioNo" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="1" name="PayDate" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Principal" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Coupon" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="PayOrReceive" nillable="true" type="PayOrReceive" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Currency" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="1" name="UnitEvalAmount" type="xs:decimal" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:simpleType name="PayOrReceive">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Pay" />
+      <xs:enumeration value="Receive" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfHWModelParameter">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="HWModelParam" nillable="true" type="HWModelParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="HWModelParameter">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AbstractCalibrationData">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Type" type="HWModelType" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefYieldCurveId" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefCapVolId" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RefSwaptionVolId" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Kappa" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Kappa2" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Rho" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CapRt" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="1" maxOccurs="1" name="FloorRt" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Vols" type="ArrayOfHWVolatility" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Calculated" nillable="true" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AbstractCalibrationData" abstract="true">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="DataId" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="BaseDate" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="DataSetId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="HWModelType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OneFactor" />
+      <xs:enumeration value="TwoFactor" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfHWVolatility">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Vol" nillable="true" type="HWVolatility" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="HWVolatility">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Tenor" type="Tenor" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:decimal" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Value2" nillable="true" type="xs:decimal" />
+    </xs:sequence>
+    <xs:attribute name="No" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:complexType name="Tenor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Code" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Year" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Date" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
